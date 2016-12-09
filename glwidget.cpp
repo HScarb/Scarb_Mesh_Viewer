@@ -1,4 +1,6 @@
 #include "glwidget.h"
+#include <iostream>
+using namespace std;
 
 GLWidget::GLWidget(QWidget * parent) :QOpenGLWidget(parent)
 {
@@ -7,22 +9,92 @@ GLWidget::GLWidget(QWidget * parent) :QOpenGLWidget(parent)
     setFormat(format);
 }
 
+
+QSize GLWidget::minimumSizeHint() const
+{
+    return QSize(50, 50);
+}
+
+QSize GLWidget::sizeHint() const
+{
+    return QSize(400, 400);
+}
+
+static void qNormalizeAngle(int &angle)
+{
+    while (angle < 0)
+        angle += 360 * 16;
+    while (angle > 360 * 16)
+        angle -= 360 * 16;
+}
+
+void GLWidget::setXRotation(int angle)
+{
+    qNormalizeAngle(angle);
+    if (angle != xRot) {
+        xRot = angle;
+        emit xRotationChanged(angle);
+        updateGL();
+    }
+}
+
+void GLWidget::setYRotation(int angle)
+{
+    qNormalizeAngle(angle);
+    if (angle != yRot) {
+        yRot = angle;
+        emit yRotationChanged(angle);
+        updateGL();
+    }
+}
+
+void GLWidget::setZRotation(int angle)
+{
+    qNormalizeAngle(angle);
+    if (angle != zRot) {
+        zRot = angle;
+        emit zRotationChanged(angle);
+        updateGL();
+    }
+}
+
 void GLWidget::initializeGL()
 {
     initializeOpenGLFunctions();
     glClearColor(0.2, 0.2, 0.2, 1);
+
+//    test_vertices = new GLfloat[6];
+//    test_vertices[0] = -0.5f;
+//    test_vertices[1] = -0.5f;
+//    test_vertices[2] = 0.5f;
+//    test_vertices[3] = -0.5f;
+//    test_vertices[4] = 0.0f;
+//    test_vertices[5] = 0.5f;
+//    glEnableClientState(GL_VERTEX_ARRAY);
+//    glVertexPointer(2, GL_FLOAT, 0, test_vertices);
+
+    m_mesh = new Mesh();
+    m_mesh->loadPointers("FEM_05_033000h.hex");
+    //m_mesh->loadPointers("test.hex");
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glVertexPointer(3, GL_FLOAT, 0, m_mesh->vertices);
 }
 
 void GLWidget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    draw();
-    glBegin(GL_TRIANGLES);
-        glColor3f(1, 0, 0);
-        glVertex3f(-0.5, -0.5, 0);
-        glVertex3f(0.5, -0.5, 0);
-        glVertex3f(0.0, 0.5, 0);
-    glEnd();
+
+    const int indexNum = m_mesh->h_cnt * 24;
+
+    glColor3f(0.3f, 0.8f, 0.3f);
+    glDrawElements(GL_QUADS, indexNum, GL_UNSIGNED_SHORT, m_mesh->item_indices);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glDrawElements(GL_LINES, indexNum, GL_UNSIGNED_SHORT, m_mesh->wire_indices);
+    glColor3f(0.3f, 0.8f, 0.3f);
+
+//    GLushort test_indices[] = {0, 1, 2, 3, 4, 5};
+//    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, test_indices);
+    //glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
 void GLWidget::resizeGL(int w, int h)
@@ -46,7 +118,36 @@ void GLWidget::resizeGL(int w, int h)
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(-2, +2, -2, +2, 0.0, 15.0);
+    glOrtho(-50, +50, -50, +50, 0.0, 1000.0);
+    glMatrixMode(GL_MODELVIEW);
+}
+
+void GLWidget::mousePressEvent(QMouseEvent *event)
+{
+    lastPos = event->pos();
+}
+
+void GLWidget::mouseMoveEvent(QMouseEvent *event)
+{
+    int dx = event->x() - lastPos.x();
+    int dy = event->y() - lastPos.y();
+
+//    if (event->buttons() & Qt::LeftButton) {
+//        setXRotation(xRot + 8 * dy);
+//        setYRotation(yRot + 8 * dx);
+//    } else if (event->buttons() & Qt::RightButton) {
+//        setXRotation(xRot + 8 * dy);
+//        setZRotation(zRot + 8 * dx);
+//    }
+    if (event->buttons() & Qt::LeftButton) {
+        setXRotation(xRot + 8 * dy);
+        setYRotation(yRot + 8 * dx);
+    } else if (event->buttons() & Qt::RightButton) {
+        setXRotation(xRot + 8 * dy);
+        setZRotation(zRot + 8 * dx);
+    }
+
+    lastPos = event->pos();
 }
 
 void GLWidget::draw()
