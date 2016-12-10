@@ -1,5 +1,6 @@
 #include "glwidget.h"
 #include <iostream>
+#include <QMouseEvent>
 using namespace std;
 
 GLWidget::GLWidget(QWidget * parent) :QOpenGLWidget(parent)
@@ -9,54 +10,57 @@ GLWidget::GLWidget(QWidget * parent) :QOpenGLWidget(parent)
     setFormat(format);
 }
 
+GLWidget::~GLWidget()
+{
+}
 
-//QSize GLWidget::minimumSizeHint() const
-//{
-//    return QSize(50, 50);
-//}
+QSize GLWidget::minimumSizeHint() const
+{
+    return QSize(50, 50);
+}
 
-//QSize GLWidget::sizeHint() const
-//{
-//    return QSize(400, 400);
-//}
+QSize GLWidget::sizeHint() const
+{
+    return QSize(400, 400);
+}
 
-//static void qNormalizeAngle(int &angle)
-//{
-//    while (angle < 0)
-//        angle += 360 * 16;
-//    while (angle > 360 * 16)
-//        angle -= 360 * 16;
-//}
+static void qNormalizeAngle(int &angle)
+{
+    while (angle < 0)
+        angle += 360 * 16;
+    while (angle > 360 * 16)
+        angle -= 360 * 16;
+}
 
-//void GLWidget::setXRotation(int angle)
-//{
-//    qNormalizeAngle(angle);
-//    if (angle != xRot) {
-//        xRot = angle;
-//        emit xRotationChanged(angle);
-//        updateGL();
-//    }
-//}
+void GLWidget::setXRotation(int angle)
+{
+    qNormalizeAngle(angle);
+    if (angle != xRot) {
+        xRot = angle;
+        emit xRotationChanged(angle);
+        update();
+    }
+}
 
-//void GLWidget::setYRotation(int angle)
-//{
-//    qNormalizeAngle(angle);
-//    if (angle != yRot) {
-//        yRot = angle;
-//        emit yRotationChanged(angle);
-//        updateGL();
-//    }
-//}
+void GLWidget::setYRotation(int angle)
+{
+    qNormalizeAngle(angle);
+    if (angle != yRot) {
+        yRot = angle;
+        emit yRotationChanged(angle);
+        update();
+    }
+}
 
-//void GLWidget::setZRotation(int angle)
-//{
-//    qNormalizeAngle(angle);
-//    if (angle != zRot) {
-//        zRot = angle;
-//        emit zRotationChanged(angle);
-//        updateGL();
-//    }
-//}
+void GLWidget::setZRotation(int angle)
+{
+    qNormalizeAngle(angle);
+    if (angle != zRot) {
+        zRot = angle;
+        emit zRotationChanged(angle);
+        update();
+    }
+}
 
 void GLWidget::initializeGL()
 {
@@ -122,33 +126,26 @@ void GLWidget::resizeGL(int w, int h)
     glMatrixMode(GL_MODELVIEW);
 }
 
-//void GLWidget::mousePressEvent(QMouseEvent *event)
-//{
-//    lastPos = event->pos();
-//}
+void GLWidget::mousePressEvent(QMouseEvent *event)
+{
+    lastPos = event->pos();
+}
 
-//void GLWidget::mouseMoveEvent(QMouseEvent *event)
-//{
-//    int dx = event->x() - lastPos.x();
-//    int dy = event->y() - lastPos.y();
+void GLWidget::mouseMoveEvent(QMouseEvent *event)
+{
+    int dx = event->x() - lastPos.x();
+    int dy = event->y() - lastPos.y();
 
-////    if (event->buttons() & Qt::LeftButton) {
-////        setXRotation(xRot + 8 * dy);
-////        setYRotation(yRot + 8 * dx);
-////    } else if (event->buttons() & Qt::RightButton) {
-////        setXRotation(xRot + 8 * dy);
-////        setZRotation(zRot + 8 * dx);
-////    }
-//    if (event->buttons() & Qt::LeftButton) {
-//        setXRotation(xRot + 8 * dy);
-//        setYRotation(yRot + 8 * dx);
-//    } else if (event->buttons() & Qt::RightButton) {
-//        setXRotation(xRot + 8 * dy);
-//        setZRotation(zRot + 8 * dx);
-//    }
+    if (event->buttons() & Qt::LeftButton) {
+        setXRotation(xRot + 8 * dy);
+        setYRotation(yRot + 8 * dx);
+    } else if (event->buttons() & Qt::RightButton) {
+        setXRotation(xRot + 8 * dy);
+        setZRotation(zRot + 8 * dx);
+    }
 
-//    lastPos = event->pos();
-//}
+    lastPos = event->pos();
+}
 
 void GLWidget::draw()
 {

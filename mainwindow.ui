@@ -24,36 +24,25 @@
      </rect>
     </property>
    </widget>
-   <widget class="QWidget" name="horizontalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>690</x>
-      <y>40</y>
-      <width>160</width>
-      <height>80</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout"/>
-   </widget>
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>720</x>
-      <y>330</y>
-      <width>108</width>
-      <height>18</height>
+      <x>680</x>
+      <y>20</y>
+      <width>341</width>
+      <height>41</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_5">
+    <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QLabel" name="label_4">
+      <widget class="QLabel" name="label">
        <property name="text">
         <string>xRot</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QSlider" name="rotXSlider_2">
+      <widget class="QSlider" name="rotXSlider">
        <property name="maximum">
         <number>5760</number>
        </property>
@@ -79,22 +68,22 @@
    <widget class="QWidget" name="layoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>850</x>
-      <y>420</y>
-      <width>108</width>
-      <height>18</height>
+      <x>680</x>
+      <y>80</y>
+      <width>341</width>
+      <height>41</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_6">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QLabel" name="label_5">
+      <widget class="QLabel" name="label_2">
        <property name="text">
         <string>yrot</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QSlider" name="rotYSlider_2">
+      <widget class="QSlider" name="rotYSlider">
        <property name="maximum">
         <number>5760</number>
        </property>
@@ -120,22 +109,22 @@
    <widget class="QWidget" name="layoutWidget_3">
     <property name="geometry">
      <rect>
-      <x>790</x>
-      <y>490</y>
-      <width>108</width>
-      <height>18</height>
+      <x>680</x>
+      <y>140</y>
+      <width>341</width>
+      <height>41</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_7">
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <widget class="QLabel" name="label_6">
+      <widget class="QLabel" name="label_3">
        <property name="text">
         <string>zRot</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QSlider" name="rotZSlider_2">
+      <widget class="QSlider" name="rotZSlider">
        <property name="maximum">
         <number>5760</number>
        </property>
@@ -186,8 +175,62 @@
    <extends>QWidget</extends>
    <header>glwidget.h</header>
    <container>1</container>
+   <slots>
+    <slot>setXRotation(int)</slot>
+    <slot>setYRotation(int)</slot>
+    <slot>setZRotation(int)</slot>
+   </slots>
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>rotXSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>widget</receiver>
+   <slot>setXRotation(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>861</x>
+     <y>66</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>339</x>
+     <y>366</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rotYSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>widget</receiver>
+   <slot>setYRotation(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>861</x>
+     <y>126</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>339</x>
+     <y>366</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rotZSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>widget</receiver>
+   <slot>setZRotation(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>861</x>
+     <y>186</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>339</x>
+     <y>366</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
