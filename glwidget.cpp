@@ -78,7 +78,7 @@ void GLWidget::initializeGL()
 //    glVertexPointer(2, GL_FLOAT, 0, test_vertices);
 
     m_mesh = new Mesh();
-    m_mesh->loadPointers("FEM_05_033000h.hex");
+    m_mesh->loadPointers("test.hex");
     //m_mesh->loadPointers("test.hex");
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(3, GL_FLOAT, 0, m_mesh->vertices);
@@ -87,6 +87,14 @@ void GLWidget::initializeGL()
 void GLWidget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
+    glTranslatef(0.0, 0.0, -10.0);
+    glRotatef(xRot / 16.0, 1.0, 0.0, 0.0);
+    glRotatef(yRot / 16.0, 0.0, 1.0, 0.0);
+    glRotatef(zRot / 16.0, 0.0, 0.0, 1.0);
+
+
+    draw();
 
     const int indexNum = m_mesh->h_cnt * 24;
 

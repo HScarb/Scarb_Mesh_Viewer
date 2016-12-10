@@ -2,7 +2,7 @@
 #include <ctime>
 #include <iostream>
 using namespace std;
-#define UNIT 0.25f
+#define UNIT 5.0f
 
 Mesh::Mesh()
 {
