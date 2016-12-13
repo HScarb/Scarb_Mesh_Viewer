@@ -34,8 +34,20 @@ void MainWindow::on_actionOpen_triggered()
             QTextStream in(&file);
             QString text = in.readAll();
 
+            ui->textEdit->setPlainText(filePath);
+            ui->widget->loadMesh("filePath");
+
+            statusBar()->showMessage(tr("File loaded"), 2000);
+
             file.close();
-            ui->textEdit->setPlainText(text);
+        }
+        else
+        {
+            QMessageBox::warning(this, tr("Application"),
+                                 tr("Cannot read file %1:\n%2.")
+                                 .arg(QDir::toNativeSeparators(filePath), file.errorString()));
+            return;
+
         }
     }
 }

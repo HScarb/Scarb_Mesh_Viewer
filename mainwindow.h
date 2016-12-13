@@ -5,6 +5,7 @@
 #include <QtCore>
 #include <QtGui>
 #include <QFileDialog>
+#include <QMessageBox>
 
 namespace Ui {
 class MainWindow;

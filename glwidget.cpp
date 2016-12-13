@@ -5,6 +5,8 @@ using namespace std;
 
 GLWidget::GLWidget(QWidget * parent) :QOpenGLWidget(parent)
 {
+    m_mesh = new Mesh();
+    m_isPainting = false;
     QSurfaceFormat format;
     format.setDepthBufferSize(24);
     setFormat(format);
@@ -62,26 +64,25 @@ void GLWidget::setZRotation(int angle)
     }
 }
 
+void GLWidget::loadMesh(QString fileName)
+{
+    m_mesh->loadPointers("test.hex");       // *
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glVertexPointer(3, GL_FLOAT, 0, m_mesh->vertices);
+    m_isPainting = true;
+    update();
+}
+
 void GLWidget::initializeGL()
 {
     initializeOpenGLFunctions();
     glClearColor(0.2, 0.2, 0.2, 1.0);
 
-//    test_vertices = new GLfloat[6];
-//    test_vertices[0] = -0.5f;
-//    test_vertices[1] = -0.5f;
-//    test_vertices[2] = 0.5f;
-//    test_vertices[3] = -0.5f;
-//    test_vertices[4] = 0.0f;
-//    test_vertices[5] = 0.5f;
-//    glEnableClientState(GL_VERTEX_ARRAY);
-//    glVertexPointer(2, GL_FLOAT, 0, test_vertices);
-
-    m_mesh = new Mesh();
+    cout << "initGL\n";
+    loadMesh("test.hex");       // *
     //m_mesh->loadPointers("FEM_05_033000h.hex");
-    m_mesh->loadPointers("test.hex");
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glVertexPointer(3, GL_FLOAT, 0, m_mesh->vertices);
+
+    //update();
 }
 
 void GLWidget::paintGL()
@@ -96,13 +97,16 @@ void GLWidget::paintGL()
 
     //draw();
 
-    const int indexNum = m_mesh->h_cnt * 24;
+    if (m_isPainting)
+    {
+        const int indexNum = m_mesh->h_cnt * 24;
 
-    glColor3f(0.3f, 0.8f, 0.3f);
-    glDrawElements(GL_QUADS, indexNum, GL_UNSIGNED_SHORT, m_mesh->item_indices);
-    glColor3f(1.0f, 1.0f, 1.0f);
-    glDrawElements(GL_LINES, indexNum, GL_UNSIGNED_SHORT, m_mesh->wire_indices);
-    glColor3f(0.3f, 0.8f, 0.3f);
+        glColor3f(0.3f, 0.8f, 0.3f);
+        glDrawElements(GL_QUADS, indexNum, GL_UNSIGNED_SHORT, m_mesh->item_indices);
+        glColor3f(1.0f, 1.0f, 1.0f);
+        glDrawElements(GL_LINES, indexNum, GL_UNSIGNED_SHORT, m_mesh->wire_indices);
+        glColor3f(0.3f, 0.8f, 0.3f);
+    }
 
 //    GLushort test_indices[] = {0, 1, 2, 3, 4, 5};
 //    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, test_indices);

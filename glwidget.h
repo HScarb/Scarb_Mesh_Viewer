@@ -4,6 +4,7 @@
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions_4_3_Compatibility>
 #include <QMatrix4x4>
+#include <QString>
 #include "mesh.h"
 
 class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions_4_3_Compatibility
@@ -16,6 +17,8 @@ public:
     void initializeGL();
     void paintGL();
     void resizeGL(int w, int h);
+
+    void loadMesh(QString fileName);
 
 protected:
     QSize minimumSizeHint() const;
@@ -49,6 +52,7 @@ private:
     QMatrix4x4 m_projection;
     Mesh * m_mesh;
     GLfloat * test_vertices;
+    bool m_isPainting;
 };
 
 #endif // GLWIDGET_H
