@@ -20,3 +20,22 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::on_actionOpen_triggered()
+{
+    QString filePath = QFileDialog::getOpenFileName(this, "Open a file.");
+
+    if(!filePath.isEmpty())
+    {
+        QFile file(filePath);
+        if(file.open(QFile::ReadOnly | QFile::Text))
+        {
+            m_filePath = filePath;
+            QTextStream in(&file);
+            QString text = in.readAll();
+
+            file.close();
+            ui->textEdit->setPlainText(text);
+        }
+    }
+}

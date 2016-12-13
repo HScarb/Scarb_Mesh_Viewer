@@ -2,6 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QtCore>
+#include <QtGui>
+#include <QFileDialog>
 
 namespace Ui {
 class MainWindow;
@@ -16,14 +19,11 @@ public:
     ~MainWindow();
 
 private slots:
-    void newFile();
-    void open();
-    bool save();
-    bool saveAs();
-    void about();
+    void on_actionOpen_triggered();
 
 private:
     Ui::MainWindow *ui;
+    QString m_filePath;
 };
 
 #endif // MAINWINDOW_H
