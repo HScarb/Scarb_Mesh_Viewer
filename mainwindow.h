@@ -15,6 +15,13 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+private slots:
+    void newFile();
+    void open();
+    bool save();
+    bool saveAs();
+    void about();
+
 private:
     Ui::MainWindow *ui;
 };

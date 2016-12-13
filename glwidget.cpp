@@ -65,7 +65,7 @@ void GLWidget::setZRotation(int angle)
 void GLWidget::initializeGL()
 {
     initializeOpenGLFunctions();
-    glClearColor(0.2, 0.2, 0.2, 1);
+    glClearColor(0.2, 0.2, 0.2, 1.0);
 
 //    test_vertices = new GLfloat[6];
 //    test_vertices[0] = -0.5f;
@@ -78,8 +78,8 @@ void GLWidget::initializeGL()
 //    glVertexPointer(2, GL_FLOAT, 0, test_vertices);
 
     m_mesh = new Mesh();
+    //m_mesh->loadPointers("FEM_05_033000h.hex");
     m_mesh->loadPointers("test.hex");
-    //m_mesh->loadPointers("test.hex");
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(3, GL_FLOAT, 0, m_mesh->vertices);
 }
@@ -94,7 +94,7 @@ void GLWidget::paintGL()
     glRotatef(zRot / 16.0, 0.0, 0.0, 1.0);
 
 
-    draw();
+    //draw();
 
     const int indexNum = m_mesh->h_cnt * 24;
 
@@ -130,7 +130,7 @@ void GLWidget::resizeGL(int w, int h)
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(-50, +50, -50, +50, 0.0, 1000.0);
+    glOrtho(-50, +50, -50, +50, -100.0, 100.0);
     glMatrixMode(GL_MODELVIEW);
 }
 

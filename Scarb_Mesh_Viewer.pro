@@ -25,3 +25,6 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui
 
 LIBS    += C:/Programs/Qt5.7.0/5.7/mingw53_32/lib/libQt5OpenGL.a -lopengl32
+
+RESOURCES += \
+    resources.qrc
